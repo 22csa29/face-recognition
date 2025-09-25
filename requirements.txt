@@ -1,0 +1,13 @@
+opencv-python
+numpy
+torch
+torchvision
+ultralytics
+insightface
+onnxruntime
+loguru
+scipy
+filterpy
+lap
+cython_bbox
+sort-tracker-py
