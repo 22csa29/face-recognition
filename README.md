@@ -118,4 +118,69 @@ CREATE TABLE IF NOT EXISTS events (
 2025-09-23 10:05:00.000 | WARNING  | __main__:main:100 - EXIT: face_1
 ```
 
+# Face Detection, Recognition & Tracking System
+
+## Overview
+This project implements a **real-time face detection, recognition, and tracking pipeline** using Python. It is designed for high accuracy in production-grade scenarios, integrating YOLO-based face detection, state-of-the-art face recognition (InsightFace), and tracking with OpenCV/DeepSort.  
+
+The system automatically registers new faces, tracks them across frames, and maintains a unique visitor count, storing all metadata in a database with structured logs.
+
+---
+
+## Features
+
+1. **Face Detection, Recognition & Tracking**
+   - Real-time detection using YOLOv8.
+   - Facial embeddings generated via **InsightFace** for high-accuracy recognition.
+   - Automatic registration of new faces with unique IDs.
+   - Detection + tracking logic to follow faces across frames.
+   - Configurable frame skipping to optimize performance (`config.json`).
+
+2. **Logging System**
+   - Each face generates **one entry per frame** for entry and exit.
+   - Logs include:
+     - Cropped face image
+     - Timestamp
+     - Event type (entry/exit)
+     - Face ID
+   - Images stored in structured directories:  
+     ```
+     logs/entries/YYYY-MM-DD/
+     logs/exits/YYYY-MM-DD/
+     ```
+   - All metadata stored in **SQLite database** (`face_log.db`).
+   - `events.log` tracks all critical system events:
+     - Face entry, recognition, tracking, exit
+     - Embedding generation and registration
+
+3. **Unique Visitor Counting**
+   - Maintains an accurate count of unique faces.
+   - Re-identification of a face does **not increment** the count.
+   - Count retrievable from database or derived from logs.
+
+---
+
+## Tech Stack
+
+| Module                | Technology                                   |
+|-----------------------|---------------------------------------------|
+| Face Detection        | YOLOv8                                      |
+| Face Recognition      | InsightFace / ArcFace                        |
+| Tracking              | OpenCV / DeepSort / ByteTrack                |
+| Backend & Processing  | Python                                       |
+| Database              | SQLite (or MongoDB/PostgreSQL optional)     |
+| Configuration         | JSON (`config.json`)                         |
+| Logging               | Log file + Local image store + Database      |
+| Input                 | Video file / RTSP camera stream              |
+
+---
+
+## Project Structure
+
+[2025-09-26 14:30:12] New face registered: F001
+[2025-09-26 14:30:15] Face F001 entered frame
+[2025-09-26 14:30:20] Face F002 entered frame
+[2025-09-26 14:31:00] Face F001 exited frame
+
+
 This project is a part of a hackathon run by https://katomaran.com
